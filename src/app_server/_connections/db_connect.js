@@ -1,26 +1,28 @@
 const mongoose = require("mongoose");
 
 const db =
-    _ENV == "production"
-        ? require("../_configs/.db-env")
-        : require("../_configs/db");
+    _ENV == "production" ?
+    require("../_configs/.db-env") :
+    require("../_configs/db");
 
-if (_ENV === "testing") {
+if (_ENV === "testing" || _ENV === "development") {
     var uri = "mongodb://" + db.host + ":" + db.port + "/" + db.database;
     console.log("URI-DB: " + uri);
-} else if (_ENV === "development" || _ENV === "production") {
-    // WARNING: en production, el host comienza por @...
+} else if (_ENV === "production") {
+    // #### MONGO_URL llega desde docker-compose.yml el otro es para productionHere sin docker
     var uri =
+        process.env.MONGO_URL ||
         "mongodb://" +
         db.user +
         ":" +
         db.password +
         "@" +
-        db.host +
+        +db.host +
         ":" +
         db.port +
         "/" +
         db.database;
+    console.log("URI-DB: " + uri);
 }
 
 // console.log("URI-DB: " + uri);
@@ -36,9 +38,9 @@ mongoose.connection
     .once("open", () => {
         console.log(
             `connection to database, in ` +
-                _ENV +
-                `, established well: ` +
-                db.port
+            _ENV +
+            `, established well: ` +
+            db.port
         );
         console.log(
             "**********************************************************************"

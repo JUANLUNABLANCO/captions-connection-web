@@ -2,13 +2,6 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.1.
 
-## Development server
-
-1. Run `npm run mongod` to serve mongod sevice. this service its running in port `30030`
-
-2. Run `npm run dev`to serve Nodejs server app. This api-rest-full its running in `http://localhost:3333/`
-
-3. Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
@@ -17,6 +10,8 @@ Run `ng generate component component-name` to generate a new component. You can 
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+`node ngProd.js` lanza la app que está en dist, por si quieres probarla
 
 ## GIT CONFIGURATIONS
 
@@ -32,7 +27,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
     en caso que ya tuviésemos apuntando nuestro repo local a otro podemos borrar el origin así
     > git remote remove origin
 
-	> git remote add origin https://github.com/JUANLUNABLANCO/captions-connection.git
+	> git remote add origin https://github.com/JUANLUNABLANCO/captions-connection-web.git
 	> git config --list
 	> git add .
 	> git commit -m "scaffolding project with webpack"
@@ -81,6 +76,73 @@ en el proyecto de node deben cumplirse 2 cosas para poder ejecutarlo en azure:
     2. scripts: {
         start: "node src/server.js"
     }
+
+Ahora en Azure nos vamos al centro de implementación
+seleccionas github o donde tengas el proyecto, la rama y un para de cosas más y aceptar
+
+te genera un archivo que debes copiar
+
+--- .github/workflows/main_captionsconnection-api.yml ---
+name: Build and deploy Node.js app to Azure Web App - captionsconnection-api
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm run test --if-present
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: node-app
+          path: .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: node-app
+
+      - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'captionsconnection-api'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_0bcf62534cb5440cbee4d723de00402c }}
+          package: .
+--- ---
+    Guardar
+
+    la uri de la app subida es:
+
+    https://captionsconnection-api.azurewebsites.net/
+
 
 
 ## Running unit tests

@@ -28,7 +28,11 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 	En este punto debes crear un repositorio nuevo en github vac铆o y enlazarlo
 
 	<!-- > git remote add origin https://github.com/JUANLUNABLANCO/<tu-repo>.git -->
-	> git remote add origin https://github.com/JUANLUNABLANCO/angular-curso-apis.git
+    
+    en caso que ya tuviésemos apuntando nuestro repo local a otro podemos borrar el origin así
+    > git remote remove origin
+
+	> git remote add origin https://github.com/JUANLUNABLANCO/captions-connection.git
 	> git config --list
 	> git add .
 	> git commit -m "scaffolding project with webpack"
@@ -65,6 +69,18 @@ Ahora vamos al recurso y aparece un panel, con un montón de opciones:
 
 debes subir tu proyecto a github si no lo tenías y consumir la url del proyecto de github para usarlo en azure
 
+    https://github.com/JUANLUNABLANCO/captions-connection.git
+
+en el proyecto de node deben cumplirse 2 cosas para poder ejecutarlo en azure:
+
+    1. necesitamos indicarle esta variable de entorno en algún sitio, para que escuche en el puerto que nos indique azure: process.env.PORT
+    en nuestro caso así queda el código:
+
+        global._PORT = process.env.PORT || CONFIG.PORT;
+
+    2. scripts: {
+        start: "node src/server.js"
+    }
 
 
 ## Running unit tests

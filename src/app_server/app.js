@@ -15,9 +15,9 @@ const https = require("https");
 global._ENV = process.env.NODE_ENV || "development";
 
 const CONFIG =
-    _ENV == "production"
-        ? require("./_configs/.general-env")
-        : require("./_configs/general");
+    _ENV == "production" ?
+    require("./_configs/.general-env") :
+    require("./_configs/general");
 // console.log(CONFIG);
 /* ##########  HELPERS          ################################# */
 const myPrint = require("./_helpers/hlpPrintConsole"); // console print dev
@@ -26,7 +26,7 @@ const myPrint = require("./_helpers/hlpPrintConsole"); // console print dev
 /* ####### CONFIGURATION  ####### */
 /* ####### GLOBALS        ####### */
 // console.log("NODE_ENV=", _ENV);
-global._PORT = CONFIG.PORT;
+global._PORT = process.env.PORT || CONFIG.PORT;
 global._CONSOLE_ACTIVE = CONFIG.CONSOLE.ACTIVE;
 global._CONSOLE_GRAPH = CONFIG.CONSOLE.GRAPH;
 global._CONSOLE_ROUTE = CONFIG.CONSOLE.ROUTE;
@@ -79,7 +79,7 @@ app.use((req, res, next) => {
     res.status(404).send("Ruta no encontrada!");
 });
 // error handler 500
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
     // stadout 1 pantalla 2 fichero log
     console.error(err.message); // Log error message in our server's console
     if (!err.statusCode) err.statusCode = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'

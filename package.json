@@ -5,7 +5,7 @@
         "ng": "ng",
         "ngStart": "ng serve",
         "ngBuild": "ng build --prod",
-        "ngProd": "nodemon ./ngProd.js",
+        "ngProd": "node ./ngProd.js",
         "ngTest": "ng test",
         "ngLint": "ng lint",
         "ngE2e": "ng e2e",

@@ -68,3 +68,6 @@ Thumbs.db
 
 # data mongo docker
 dbdata
+
+# Local Netlify folder
+.netlify

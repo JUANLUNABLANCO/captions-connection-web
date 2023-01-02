@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ChannelModel } from '../models/Channel.model';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 // import { map } from 'rxjs/operators'; // operators
 
 @Injectable({
@@ -9,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class ChannelService {
     newChannel: ChannelModel;
-    urlBase = 'http://localhost:3333/api';
+    urlBase = environment.baseUrl;
     // TODO: el token será leido del localstorage,
     // authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiX2lkIjoiNWY2Nzk4NzkwNTZhNWQwZWM0MTI5MTQ4IiwiY3JlYXRlZEF0IjoiMjAyMC0wOS0yMFQxNzo1OToyMS42NDFaIn0sImlhdCI6MTYwMTc1MjQ3OCwiZXhwIjoxNjAxNzUyNjU4fQ.QHpcB2FjLwHLbi1FmRacS4aM3b4SQfR_OifWxycZqCI';
 
